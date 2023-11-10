@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mohoro/bloc/get.hot.news.dart';
+import 'package:mohoro/bloc/get.top.headlines.bloc.dart';
 // import 'package:mohoro/bloc/get.top.headlines.bloc.dart';
 import 'package:mohoro/elements/error.element.dart';
 import 'package:mohoro/elements/loader.element.dart';
@@ -23,15 +24,15 @@ class _HeadlineSliderWidgetState extends State<HeadlineSliderWidget> {
   @override
   void initState() {
     super.initState();
-    getHotNewsBloc.getHotNews();
-    // getTopHeadlinesBloc.getHeadlines();
+    // getHotNewsBloc.getHotNews();
+    getTopHeadlinesBloc.getHeadlines();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<ArticleResponse>(
-      stream: getHotNewsBloc.subject.stream,
-      // stream: getTopHeadlinesBloc.subject.stream,
+      stream: getTopHeadlinesBloc.subject.stream,
+      // stream: getHotNewsBloc.subject.stream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data != null && snapshot.data!.error.isNotEmpty) {

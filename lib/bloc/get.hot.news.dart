@@ -7,8 +7,8 @@ class GetHotNewsBloc {
   final BehaviorSubject<ArticleResponse> _subject =
       BehaviorSubject<ArticleResponse>();
 
-  getHotNews() async {
-    ArticleResponse response = await _repository.getHotNews();
+  getHotNews(String selectedQuery) async {
+    ArticleResponse response = await _repository.getHotNews(selectedQuery);
     _subject.sink.add(response);
   }
 

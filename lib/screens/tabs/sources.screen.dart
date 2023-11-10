@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mohoro/bloc/get.sources.bloc.dart';
+import 'package:mohoro/common.libs.dart';
 import 'package:mohoro/elements/error.element.dart';
 import 'package:mohoro/elements/loader.element.dart';
 import 'package:mohoro/model/source.model.dart';
@@ -22,20 +23,28 @@ class _SourceScreenState extends State<SourceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<SourceResponse>(
-      stream: getSourcesBloc.subject.stream,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data != null && snapshot.data!.error.isNotEmpty) {
-            return buildErrorWidget(snapshot.data!.error);
-          }
-          return _buildSources(snapshot.data);
-        } else if (snapshot.hasError) {
-          return buildErrorWidget(snapshot.data!.error);
-        } else {
-          return buildLoadingWidget();
-        }
-      },
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        automaticallyImplyLeading: true,
+      ),
+      body: SizedBox(
+        child: StreamBuilder<SourceResponse>(
+          stream: getSourcesBloc.subject.stream,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              if (snapshot.data != null && snapshot.data!.error.isNotEmpty) {
+                return buildErrorWidget(snapshot.data!.error);
+              }
+              return _buildSources(snapshot.data);
+            } else if (snapshot.hasError) {
+              return buildErrorWidget(snapshot.data!.error);
+            } else {
+              return buildLoadingWidget();
+            }
+          },
+        ),
+      ),
     );
   }
 

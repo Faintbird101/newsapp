@@ -13,7 +13,7 @@ class ArticleModel {
   const ArticleModel({
     required this.source,
     required this.author,
-    required this.title,
+  required this.title,
     required this.description,
     required this.url,
     required this.urlToImage,

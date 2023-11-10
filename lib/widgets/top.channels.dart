@@ -55,7 +55,8 @@ class _TopChannelsState extends State<TopChannels> {
         height: 115.0,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: sources.length,
+          itemCount: 5,
+          // sources.length,
           itemBuilder: (context, index) {
             return Container(
               padding: const EdgeInsets.only(

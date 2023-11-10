@@ -21,8 +21,7 @@ class NewsRepository {
       "country": "us",
     };
     try {
-      Response response =
-          await _dio.get(getSourcesUrl, queryParameters: params);
+      Response response = await _dio.get(getSourcesUrl, queryParameters: params);
       return SourceResponse.fromJson(response.data);
     } catch (e, stacktrace) {
       log("Exception in sources occured: $e stackTrace: $stacktrace");
@@ -49,53 +48,54 @@ class NewsRepository {
   //   // }
   // }
 
-  // Future<ArticleResponse> getTopHeadlines() {
-  //   var params = {"apiKey": apiKey, "country": "us"};
-
-  //   return _dio
-  //       .get(getTopHeadlinesUrl, queryParameters: params)
-  //       .then((Response response) {
-  //     log(jsonEncode(response.data));
-  //     final responseModel = responseModelFromJson(jsonEncode(response.data));
-  //     return ArticleResponse.fromJson(response.data);
-  //   }).catchError((e) {
-  //     log("Exception in topheadlines occurred: $e");
-  //     throw e;
-  //   });
-  // }
-
-  Future<ArticleResponse> getTopHeadlines() async {
+  Future<ArticleResponse> getTopHeadlines() {
     var params = {
       "apiKey": apiKey,
       "country": "us",
     };
 
-    try {
-      Response response =
-          await _dio.get(getTopHeadlinesUrl, queryParameters: params);
-      // List<dynamic> parsedData = jsonDecode(response.data);
-      // log(jsonEncode(response.data));
-      return convertResponseToArticleResponse(response);
-    } catch (e, stacktrace) {
-      log("Exception in topheadlines occurred: $e stackTrace: $stacktrace");
+    return _dio.get(getTopHeadlinesUrl, queryParameters: params).then((Response response) {
+      log(jsonEncode(response.data));
+      final responseModel = responseModelFromJson(jsonEncode(response.data));
+      return ArticleResponse.fromJson(response.data);
+    }).catchError((e) {
+      log("Exception in topheadlines occurred: $e");
       throw e;
-    }
+    });
   }
+
+  // Future<ArticleResponse> getTopHeadlines() async {
+  //   var params = {
+  //     "apiKey": apiKey,
+  //     "country": "us",
+  //     "category": "business",
+  //   };
+
+  //   try {
+  //     Response response =
+  //         await _dio.get(getTopHeadlinesUrl, queryParameters: params);
+  //     // List<dynamic> parsedData = jsonDecode(response.data);
+  //     // log(jsonEncode(response.data));
+  //     return convertResponseToArticleResponse(response);
+  //   } catch (e, stacktrace) {
+  //     log("Exception in topheadlines occurred: $e stackTrace: $stacktrace");
+  //     throw e;
+  //   }
+  // }
 
   ArticleResponse convertResponseToArticleResponse(Response response) {
     final responseModel = responseModelFromJson(jsonEncode(response.data));
     return ArticleResponse.fromJson({"articles": responseModel.articles});
   }
 
-  Future<ArticleResponse> getHotNews() async {
+  Future<ArticleResponse> getHotNews(selectedQuery) async {
     var params = {
       "apiKey": apiKey,
-      "q": "apple",
+      "q": selectedQuery,
       "sortBy": "popularity",
     };
     try {
-      Response response =
-          await _dio.get(everythingUrl, queryParameters: params);
+      Response response = await _dio.get(everythingUrl, queryParameters: params);
       return ArticleResponse.fromJson(response.data);
     } catch (e, stacktrace) {
       log("Exception in hotnews occured: $e stackTrace: $stacktrace");
@@ -109,8 +109,7 @@ class NewsRepository {
       "sources": sourceId,
     };
     try {
-      Response response =
-          await _dio.get(getTopHeadlinesUrl, queryParameters: params);
+      Response response = await _dio.get(getTopHeadlinesUrl, queryParameters: params);
       return ArticleResponse.fromJson(response.data);
     } catch (e, stacktrace) {
       log("Exception in sourcenews occured: $e stackTrace: $stacktrace");
@@ -124,8 +123,7 @@ class NewsRepository {
       "q": searchValue,
     };
     try {
-      Response response =
-          await _dio.get(getTopHeadlinesUrl, queryParameters: params);
+      Response response = await _dio.get(getTopHeadlinesUrl, queryParameters: params);
       return ArticleResponse.fromJson(response.data);
     } catch (e, stacktrace) {
       log("Exception in topheadlines occured: $e stackTrace: $stacktrace");

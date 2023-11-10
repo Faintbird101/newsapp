@@ -1,51 +1,93 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:mohoro/bloc/get.hot.news.dart';
+import 'package:mohoro/bloc/get.top.headlines.bloc.dart';
 import 'package:mohoro/common.libs.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class HotNews extends StatefulWidget {
-  const HotNews({super.key});
+class HotNewsScreen extends StatefulWidget {
+  const HotNewsScreen({super.key});
 
   @override
-  State<HotNews> createState() => _HotNewsState();
+  State<HotNewsScreen> createState() => _HotNewsScreenState();
 }
 
-class _HotNewsState extends State<HotNews> {
+class _HotNewsScreenState extends State<HotNewsScreen> {
   @override
   void initState() {
     super.initState();
     getHotNewsBloc.getHotNews(selectedValue);
+    // getTopHeadlinesBloc.getHeadlines();
   }
 
   String selectedValue = "General News";
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ArticleResponse>(
-      stream: getHotNewsBloc.subject.stream,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data != null && snapshot.data!.error.isNotEmpty) {
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        backgroundColor: $styles.colors.deepPurple,
+        title: Text(
+          "HotNews",
+          style: $styles.text.h4.copyWith(
+            color: $styles.colors.offWhite,
+          ),
+        ),
+        actions: [
+          DropdownButton<String>(
+            value: selectedValue,
+            items: <String>[
+              'Businesss',
+              'Education',
+              'General News',
+              'Health',
+              'Politics',
+              'Science',
+              'Sports',
+              'Tech',
+              'Travel',
+            ].map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+            onChanged: (String? newValue) async {
+              setState(() {
+                selectedValue = newValue!;
+              });
+              await getHotNewsBloc.getHotNews(selectedValue);
+            },
+          ),
+        ],
+      ),
+      body: StreamBuilder<ArticleResponse>(
+        stream: getHotNewsBloc.subject.stream,
+        // stream: getTopHeadlinesBloc.subject.stream,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data != null && snapshot.data!.error.isNotEmpty) {
+              return buildErrorWidget(snapshot.data!.error);
+            }
+            return _buildHotNewsScreen(snapshot.data);
+          } else if (snapshot.hasError) {
             return buildErrorWidget(snapshot.data!.error);
+          } else {
+            return buildLoadingWidget();
           }
-          return _buildHotNews(snapshot.data);
-        } else if (snapshot.hasError) {
-          return buildErrorWidget(snapshot.data!.error);
-        } else {
-          return buildLoadingWidget();
-        }
-      },
+        },
+      ),
     );
   }
 
-  Widget _buildHotNews(ArticleResponse? data) {
+  Widget _buildHotNewsScreen(ArticleResponse? data) {
     List<ArticleModel> articles = data!.articles;
     return Container(
       height: articles.length / 2 * 210.0,
       padding: const EdgeInsets.all(5.0),
       child: GridView.builder(
-        itemCount: 6,
-        // articles.length,
+        itemCount: articles.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 0.85,
@@ -192,6 +234,7 @@ class _HotNewsState extends State<HotNews> {
                               color: $styles.colors.deepPurple,
                               fontSize: 9.0,
                             ),
+                            maxLines: 2,
                           ),
                           Text(
                             timeAgo(DateTime.parse(articles[index].publishedAt)),
@@ -217,3 +260,23 @@ class _HotNewsState extends State<HotNews> {
     return timeago.format(date, allowFromNow: true, locale: 'en');
   }
 }
+
+// class GetHotNewsBloc {
+//   final NewsRepository _repository = NewsRepository();
+//   final BehaviorSubject<ArticleResponse> _subject =
+//       BehaviorSubject<ArticleResponse>();
+
+//   getHotNews(String selectedQuery ) async {
+//     ArticleResponse response = await _repository.getHotNews(selectedQuery);
+//     _subject.sink.add(response);
+//   }
+
+//   dispose() {
+//     _subject.close();
+//   }
+
+//   BehaviorSubject<ArticleResponse> get subject => _subject;
+// }
+
+// final getHotNewsBloc = GetHotNewsBloc();
+
