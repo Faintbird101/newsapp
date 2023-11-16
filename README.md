@@ -11,6 +11,7 @@ After fetching data from the API, the Go server updates the in-memory data  and 
 Serving Data via HTTP:
 
 The Go server exposes an HTTP endpoint (/getData) to serve the data. The getData endpoint sends the locally stored data in response to HTTP requests from my Flutter app.
+
 2. Flutter App:
 The Flutter app interacts with the Go server and SQLite database as follows:
 
@@ -23,6 +24,7 @@ When the getHotNews method in GetHotNewsBloc is called, it sends a request to th
 Displaying Data in Flutter UI:
 
 The Flutter app uses a StreamBuilder to listen for changes in the data stream. When new data is received from the Go server, the UI is updated accordingly. The _buildHotNews method displays the articles in a GridView.
+
 3. Connection Flow:
 App Initialization:
 
@@ -39,5 +41,6 @@ After updating the data, the Go server responds to the Flutter app with the upda
 Flutter App Updates UI:
 
 The StreamBuilder in the Flutter app detects changes in the data stream and rebuilds the UI with the new data.
+
 Summary:
 In summary, my Flutter app triggers the Go server to fetch and update data from the News API. The Go server stores the data locally in an SQLite database. The Flutter app listens for changes in the data stream and updates the UI accordingly, providing a seamless user experience with fresh news articles. This architecture ensures that my app remains functional even if the News API is unavailable, and it also reduces the frequency of API requests by storing data locally.
