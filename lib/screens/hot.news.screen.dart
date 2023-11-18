@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:mohoro/bloc/get.hot.news.dart';
-import 'package:mohoro/bloc/get.top.headlines.bloc.dart';
 import 'package:mohoro/common.libs.dart';
-import 'package:rxdart/subjects.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class HotNewsScreen extends StatefulWidget {

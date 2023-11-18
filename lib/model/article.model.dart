@@ -33,4 +33,17 @@ class ArticleModel {
       content: map['content'] ?? "",
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'source': source.toJson(),
+      'author': author,
+      'title': title,
+      'description': description,
+      'url': url,
+      'urlToImage': urlToImage,
+      'publishedAt': publishedAt,
+      'content': content,
+    };
+  }
 }

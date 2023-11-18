@@ -25,4 +25,16 @@ class SourceModel {
         category = json["category"] ?? "",
         country = json["country"] ?? "",
         language = json["language"] ?? "";
+  
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'url': url,
+      'category': category,
+      'country': country,
+      'language': language,
+    };
+  }
 }

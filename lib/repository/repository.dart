@@ -5,6 +5,7 @@ import 'package:mohoro/common.libs.dart';
 
 class NewsRepository {
   static String mainUrl = "https://newsapi.org/v2/";
+  static String localUrl = "http://localhost:8080";
   final String apiKey = "6a9d18fad44e475fbfe072ee01c207bf";
   //  vkinyua3@gmail.com = "79e2c9073b1e47889ea9743f51171e37"
 
@@ -12,7 +13,8 @@ class NewsRepository {
 
   var getSourcesUrl = "$mainUrl/sources";
   var getTopHeadlinesUrl = "$mainUrl/top-headlines";
-  var everythingUrl = "$mainUrl/everything";
+  // var everythingUrl = "$mainUrl/everything";
+  var everythingUrl = "$localUrl/getData";
 
   Future<SourceResponse> getSources() async {
     var params = {
@@ -28,25 +30,6 @@ class NewsRepository {
       return SourceResponse.withError("$e");
     }
   }
-
-  // Future<ArticleResponse> getTopHeadlines() async {
-  //   var params = {
-  //     "apiKey": apiKey,
-  //     "country": "us",
-  //   };
-  //   Response response = await _dio
-  //       .get(getTopHeadlinesUrl, queryParameters: params)
-  //       .then((value) => value)
-  //       .catchError((e) {
-  //     ArticleResponse.withError("$e");
-  //   });
-  //   return ArticleResponse.fromJson(response.data);
-  //   // try {
-  //   // } catch (e, stacktrace) {
-  //   //   log("Exception in topheadlines occured: $e stackTrace: $");
-  //   //   return ArticleResponse.withError("$e");
-  //   // }
-  // }
 
   Future<ArticleResponse> getTopHeadlines() {
     var params = {
@@ -64,25 +47,6 @@ class NewsRepository {
     });
   }
 
-  // Future<ArticleResponse> getTopHeadlines() async {
-  //   var params = {
-  //     "apiKey": apiKey,
-  //     "country": "us",
-  //     "category": "business",
-  //   };
-
-  //   try {
-  //     Response response =
-  //         await _dio.get(getTopHeadlinesUrl, queryParameters: params);
-  //     // List<dynamic> parsedData = jsonDecode(response.data);
-  //     // log(jsonEncode(response.data));
-  //     return convertResponseToArticleResponse(response);
-  //   } catch (e, stacktrace) {
-  //     log("Exception in topheadlines occurred: $e stackTrace: $stacktrace");
-  //     throw e;
-  //   }
-  // }
-
   ArticleResponse convertResponseToArticleResponse(Response response) {
     final responseModel = responseModelFromJson(jsonEncode(response.data));
     return ArticleResponse.fromJson({"articles": responseModel.articles});
@@ -96,6 +60,7 @@ class NewsRepository {
     };
     try {
       Response response = await _dio.get(everythingUrl, queryParameters: params);
+      // log("ndio hii data:${response.data}");
       return ArticleResponse.fromJson(response.data);
     } catch (e, stacktrace) {
       log("Exception in hotnews occured: $e stackTrace: $stacktrace");
