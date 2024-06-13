@@ -4,9 +4,9 @@ import 'dart:developer';
 import 'package:mohoro/common.libs.dart';
 
 class NewsRepository {
-  static String mainUrl = "YOUR-MAIN-URL"; //**REPLACE THIS WITH YOUR MAIN URL**//
-  static String localUrl = "YOUR-LOCAL-URL"; //**REPLACE THIS WITH YOUR LOCAL URL**//
-  final String apiKey = "YOUR-API-KEY"; //**REPLACE THIS WITH YOUR API KEY**//
+  static String mainUrl = "https://newsapi.org/v2/";
+  static String localUrl = "http://localhost:8080";
+  final String apiKey = "6a9d18fad44e475fbfe072ee01c207bf";
 
   final Dio _dio = Dio();
 
